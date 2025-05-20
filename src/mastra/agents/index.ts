@@ -2,7 +2,7 @@ import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
 import { LibSQLStore } from '@mastra/libsql';
 import { weatherTool } from '../tools';
-import { qwen } from '../model';
+import { ollama, qwen } from '../model';
 
 export const weatherAgent = new Agent({
   name: 'Weather Agent',
@@ -20,6 +20,26 @@ export const weatherAgent = new Agent({
 `,
   model: qwen('qwen-plus'),
   tools: { weatherTool },
+  memory: new Memory({
+    storage: new LibSQLStore({
+      url: 'file:../mastra.db', // path is relative to the .mastra/output directory
+    }),
+    options: {
+      lastMessages: 10,
+      semanticRecall: false,
+      threads: {
+        generateTitle: false,
+      },
+    },
+  }),
+});
+
+export const testAgent = new Agent({
+  name: 'Test Agent',
+  instructions: `
+  你是一只猪，请回答用户的问题
+  `,
+  model: ollama('qwen2.5:7b'),
   memory: new Memory({
     storage: new LibSQLStore({
       url: 'file:../mastra.db', // path is relative to the .mastra/output directory
