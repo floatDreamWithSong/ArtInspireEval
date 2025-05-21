@@ -1,14 +1,17 @@
 import { createQwen } from 'qwen-ai-provider';
 import { createOllama } from 'ollama-ai-provider';
+import { createOpenAI } from '@ai-sdk/openai';
 
 export const qwen = createQwen({
-  // optional settings, e.g.
   apiKey: process.env.QWEN_API_KEY,
-  baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+  baseURL: process.env.QWEN_BASE_URL,
 });
 
-
 export const ollama = createOllama({
-  // optional settings, e.g.
-  baseURL: 'http://localhost:11434/api',
+  baseURL: process.env.OLLAMA_BASE_URL,
+});
+
+export const openai = createOpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+  baseURL: process.env.OPENAI_BASE_URL,
 });
